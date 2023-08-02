@@ -88,7 +88,6 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
-
     def _update_screen(self):
         """Update images on the scren, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)   
@@ -99,29 +98,29 @@ class AlienInvasion:
 
     def _create_fleet(self):
         """Create the fleet of aliens."""
-        # Create an alien and keep adding aliens until there's no room left.
-        # Spacing between aliens is one alien width.
-        # Make an alien
+        # Spacing between aliens is one alien width and one alien height.
         alien = Alien(self)
-        # self.aliens.add(alien)
-        alien_width = alien.rect.width
+        alien_width, alien_height = alien.rect.size
 
-        current_x = alien_width
-        while current_x < (self.settings.screen_width - 2 * alien_width):
-            # new_alien.x = current_x
-            # new_alien.rect.x = current_x
-            self._create_alien(current_x)
-            current_x += 2 * alien_width
+        current_x, current_y = alien.rect.size
+        while current_y < (self.settings.screen_height - 3 * alien_height):
+            while current_x < (self.settings.screen_width - 2 * alien_width):
+                self._create_alien(current_x, current_y)
+                current_x += 2 * alien_width
 
-    def _create_alien(self, x_position):
+            # Finished a row; reset x value, and increment y value.
+            current_x = alien_width
+            current_y += 2 * alien_height
+
+    def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the row."""
         new_alien = Alien(self)
+        new_alien.x = x_position
         new_alien.rect.x = x_position
-        new_alien.rect_x = x_position
+        new_alien.rect.y = y_position
         self.aliens.add(new_alien)
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
     ai = AlienInvasion()
     ai.run_game()
-
